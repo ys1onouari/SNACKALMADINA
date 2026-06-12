@@ -32,12 +32,12 @@ function renderItems() {
       ? `<img src="${item.image_url}" class="item-img" alt="${item.name}"/>`
       : `<div class="item-img-placeholder"></div>`;
     return `<tr>
-      <td>${img}</td>
-      <td><strong style="color:var(--text)">${item.name}</strong></td>
-      <td>${item.category}</td>
-      <td>${item.price} DH</td>
-      <td><span class="badge-dot ${item.available ? 'on' : 'off'}"></span></td>
-      <td>
+      <td data-label="Image">${img}</td>
+      <td data-label="Nom"><strong style="color:var(--text)">${item.name}</strong></td>
+      <td data-label="Catégorie">${item.category}</td>
+      <td data-label="Prix">${item.price} DH</td>
+      <td data-label="Dispo"><span class="badge-dot ${item.available ? 'on' : 'off'}"></span></td>
+      <td data-label="Actions">
         <button class="admin-action-btn edit" data-edit-item="${item.id}" title="Modifier">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
@@ -54,9 +54,9 @@ function renderCats() {
   if (!tbody) return;
   tbody.innerHTML = cats.map(cat => `
     <tr>
-      <td><strong style="color:var(--text)">${cat.name}</strong></td>
-      <td>${cat.sort_order ?? '-'}</td>
-      <td>
+      <td data-label="Nom"><strong style="color:var(--text)">${cat.name}</strong></td>
+      <td data-label="Ordre">${cat.sort_order ?? '-'}</td>
+      <td data-label="Actions">
         <button class="admin-action-btn edit" data-edit-cat="${cat.id}" title="Modifier">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>

@@ -38,3 +38,207 @@
     transform: translateY(0);
   }
 }
+
+/* ==============================================
+   ADMIN DASHBOARD — Responsive
+   ============================================== */
+
+@media (max-width: 768px) {
+  .admin-scaffold {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    flex-direction: row;
+    padding: 8px 12px;
+    border-right: none;
+    border-bottom: 1px solid rgba(212, 168, 71, 0.08);
+    overflow-x: auto;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-sidebar-header {
+    display: none;
+  }
+
+  .admin-sidebar-nav {
+    flex-direction: row;
+    flex: none;
+    gap: 4px;
+  }
+
+  .admin-nav-item {
+    padding: 6px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    justify-content: flex-start;
+  }
+
+  .admin-nav-item span {
+    display: inline;
+  }
+
+  .admin-logout {
+    margin-top: 0;
+    margin-left: auto;
+    padding: 6px 10px;
+    flex-shrink: 0;
+  }
+
+  .admin-logout span {
+    display: inline;
+  }
+
+  .admin-main {
+    padding: 16px;
+  }
+
+  .admin-view-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .admin-view-header h1 {
+    font-size: 20px;
+  }
+
+  .admin-btn-add {
+    width: 100%;
+    text-align: center;
+    padding: 10px 18px;
+    font-size: 12px;
+  }
+
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-tbl th,
+  .admin-tbl td {
+    padding: 8px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .admin-tbl .item-img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .admin-tbl .item-img-placeholder {
+    width: 30px;
+    height: 30px;
+  }
+
+  .admin-modal .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table-wrap .config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-modal {
+    width: 94vw;
+    padding: var(--space-lg);
+  }
+
+  .admin-modal h2 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-tbl {
+    display: block;
+  }
+
+  .admin-tbl thead {
+    display: none;
+  }
+
+  .admin-tbl tbody,
+  .admin-tbl tr,
+  .admin-tbl td {
+    display: block;
+  }
+
+  .admin-tbl tr {
+    background: var(--card);
+    border: 1px solid rgba(212, 168, 71, 0.08);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .admin-tbl tr:hover td {
+    background: transparent;
+  }
+
+  .admin-tbl td {
+    padding: 4px 0;
+    border-bottom: none;
+    font-size: 12px;
+    white-space: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .admin-tbl td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+
+  .admin-tbl td:first-child {
+    padding-top: 0;
+  }
+
+  .admin-tbl td:last-child {
+    padding-bottom: 0;
+  }
+
+  .admin-tbl .item-img,
+  .admin-tbl .item-img-placeholder {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-view-header h1 {
+    font-size: 18px;
+  }
+
+  .admin-main {
+    padding: 12px;
+  }
+
+  .admin-modal {
+    padding: var(--space-md);
+  }
+
+  .admin-modal .form-actions {
+    flex-direction: column;
+  }
+
+  .admin-modal .form-actions button {
+    width: 100%;
+  }
+}

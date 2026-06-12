@@ -1681,13 +1681,5 @@
 
 .toggle-label { font-size: 12px; color: var(--text2); }
 
-@media (max-width: 768px) {
-  .admin-sidebar { width: 56px; padding: 16px 6px; }
-  .admin-sidebar-header span, .admin-nav-item span, .admin-logout span { display: none; }
-  .admin-nav-item { justify-content: center; padding: 8px; }
-  .admin-main { padding: 16px; }
-  .admin-modal .form-row { grid-template-columns: 1fr; }
-}
-
 body.admin-mode .bottom-nav { display: none; }
 body.admin-mode .page { padding-bottom: 0; }
