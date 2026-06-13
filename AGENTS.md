@@ -1,10 +1,10 @@
-# LUXORA — Digital Menu
+# RESTAURANT FADAE RIF — Digital Menu
 
 ## Stack
 - Vanilla JS SPA (ES6 modules, no framework, no bundler)
 - Supabase (tables: `categories`, `menu_items`, `settings`; bucket: `dish-images`)
 - CSS custom properties (dark mode only)
-- Auth: `admin@luxora.com`
+- Auth: `admin@fadaerif.com` / `fadaerif2026`
 
 ## Dev server (required for ES6 modules)
 ```bash
@@ -33,7 +33,7 @@ Opening `index.html` via `file://` will not work.
 - IDs: `camelCase`; classes: `kebab-case`; data attributes: `kebab-case`
 - Currency: `DH` (no symbol)
 - No emoji/icons — only inline SVG
-- Palette: `#0c0a14` bg, `#d4a847` gold, `#141120` card, glassmorphism with `rgba(212,168,71,0.08)` borders
+- Palette: `#090909` bg, `#D40906` primary, `#F25928` secondary, `#E8D33A` accent, glassmorphism with `rgba(255,255,255,0.08)` borders
 
 ## Gotchas
 - `supabase-js` is dynamically imported from CDN — **never** add top-level `await` in module scope

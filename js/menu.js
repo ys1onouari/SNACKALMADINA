@@ -33,7 +33,7 @@ const FALLBACK_MENU = [
   { id: 15, name: 'Plateau de Fruits de Mer', category: 'Fruits de Mer', price: 95, description: 'Sélection du marché : huîtres, langoustines, crevettes, palourdes.', tags: ['chef'], available: false, popular: false, image: '' },
   { id: 16, name: 'Entrecôte Maturée 45j', category: 'Grillades', price: 46, description: 'Entrecôte maturée 45 jours, sauce béarnaise, frites maison et salade.', tags: ['halal'], available: true, popular: true, image: '' },
   { id: 17, name: 'Côtelettes d\'Agneau', category: 'Grillades', price: 44, description: 'Double côtelette d\'agneau marinée au romarin, légumes grillés.', tags: ['halal'], available: true, popular: false, image: '' },
-  { id: 18, name: 'Mixed Grill Luxora', category: 'Grillades', price: 58, description: 'Sélection de viandes grillées : bœuf, agneau, poulet, merguez maison.', tags: ['chef', 'halal', 'spicy'], available: true, popular: true, image: '' },
+  { id: 18, name: 'Mixed Grill FADAE RIF', category: 'Grillades', price: 58, description: 'Sélection de viandes grillées : bœuf, agneau, poulet, merguez maison.', tags: ['chef', 'halal', 'spicy'], available: true, popular: true, image: '' },
   { id: 19, name: 'Fondant au Chocolat', category: 'Desserts', price: 12, description: 'Coulant au chocolat Valrhona 70%, glace vanille bourbon et caramel beurre salé.', tags: ['chef'], available: true, popular: true, image: '' },
   { id: 20, name: 'Crème Brûlée à la Rose', category: 'Desserts', price: 11, description: 'Crème brûlée infusée à l\'eau de rose, sucre caramélisé à la torche.', tags: [], available: true, popular: false, image: '' },
   { id: 21, name: 'Mille-Feuille Revisité', category: 'Desserts', price: 14, description: 'Feuilletage croustillant, crème diplomate à la vanille de Madagascar.', tags: ['chef'], available: true, popular: false, image: '' },
@@ -102,12 +102,12 @@ export function renderContact() {
       <div class="contact-info"><h3>Téléphone</h3><a href="tel:${s.phone_raw || '+212630230803'}">${s.phone || '+212 630 230 803'}</a></div>
     </div>
     <div class="contact-card">
-      <div class="contact-info"><h3>Email</h3><a href="mailto:${s.email || 'contact@luxora.ma'}">${s.email || 'contact@luxora.ma'}</a></div>
+      <div class="contact-info"><h3>Email</h3><a href="mailto:${s.email || 'contact@fadaerif.ma'}">${s.email || 'contact@fadaerif.ma'}</a></div>
     </div>
     <div class="contact-card">
-      <div class="contact-info"><h3>Instagram</h3><a href="#">${s.instagram || '@luxora.finedining'}</a></div>
+      <div class="contact-info"><h3>Instagram</h3><a href="#">${s.instagram || '@fadaerif.marrakech'}</a></div>
     </div>
-    <a class="wa-cta" href="https://wa.me/${s.wa_number || '212630230803'}?text=${encodeURIComponent('Bonjour, je voudrais avoir des informations sur ' + (s.restaurant_name || 'Luxora') + '.')}" target="_blank">
+    <a class="wa-cta" href="https://wa.me/${s.wa_number || '212630230803'}?text=${encodeURIComponent('Bonjour, je voudrais avoir des informations sur ' + (s.restaurant_name || 'FADAE RIF') + '.')}" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.541 5.87L0 24l6.268-1.508A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.939 0-3.765-.494-5.353-1.359l-.373-.21-3.863.929.972-3.756-.235-.391A9.963 9.963 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
       Contacter via WhatsApp
     </a>`;

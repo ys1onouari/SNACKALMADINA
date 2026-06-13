@@ -115,7 +115,7 @@ INSERT INTO menu_items (name, category, price, description, available, popular) 
   ('Plateau de Fruits de Mer',   'Fruits de Mer',    95, 'Sélection du marché : huîtres, langoustines, crevettes, palourdes.',                                                                          FALSE, FALSE),
   ('Entrecôte Maturée 45j',      'Grillades',        46, 'Entrecôte maturée 45 jours, sauce béarnaise, frites maison et salade.',                                                                      TRUE,  TRUE),
   ('Côtelettes d''Agneau',       'Grillades',        44, 'Double côtelette d''agneau marinée au romarin, légumes grillés.',                                                                             TRUE,  FALSE),
-  ('Mixed Grill Luxora',         'Grillades',        58, 'Sélection de viandes grillées : bœuf, agneau, poulet, merguez maison.',                                                                     TRUE,  TRUE),
+  ('Mixed Grill FADAE RIF',         'Grillades',        58, 'Sélection de viandes grillées : bœuf, agneau, poulet, merguez maison.',                                                                     TRUE,  TRUE),
   ('Fondant au Chocolat',        'Desserts',         12, 'Coulant au chocolat Valrhona 70%, glace vanille bourbon et caramel beurre salé.',                                                              TRUE,  TRUE),
   ('Crème Brûlée à la Rose',     'Desserts',         11, 'Crème brûlée infusée à l''eau de rose, sucre caramélisé à la torche.',                                                                        TRUE,  FALSE),
   ('Mille-Feuille Revisité',     'Desserts',         14, 'Feuilletage croustillant, crème diplomate à la vanille de Madagascar.',                                                                       TRUE,  FALSE),
@@ -126,12 +126,12 @@ INSERT INTO menu_items (name, category, price, description, available, popular) 
   ('Thé à la Menthe Royale',     'Boissons',          6, 'Thé vert infusé à la menthe fraîche, servi dans notre théière en argent.',                                                                    TRUE,  FALSE);
 
 INSERT INTO settings (key, value) VALUES
-  ('restaurant_name',     'LUXORA'),
+   ('restaurant_name',     'RESTAURANT FADAE RIF'),
   ('restaurant_subtitle', 'Restaurant Gastronomique'),
   ('address',             'Av. Mohammed VI, Marrakech 40000, Maroc'),
   ('hours',               'Lun–Dim 19h–00h<br/>Bar & Lounge 18h–02h'),
   ('phone',               '+212 524 43 21 00'),
   ('phone_raw',           '+212524432100'),
-  ('email',               'contact@luxora.ma'),
-  ('instagram',           '@luxora.marrakech'),
+  ('email',               'contact@fadaerif.ma'),
+  ('instagram',           '@fadaerif.marrakech'),
   ('wa_number',           '212661234567');

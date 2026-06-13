@@ -23,7 +23,7 @@
 .section-eyebrow {
   font-size: var(--text-xs);
   letter-spacing: 0.35em;
-  color: var(--gold);
+  color: var(--accent);
   text-transform: uppercase;
   margin-bottom: var(--space-sm);
   font-weight: 500;
@@ -40,7 +40,7 @@
 .section-line {
   width: 60px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
   margin: var(--space-md) auto 0;
 }
 
@@ -122,13 +122,13 @@
 .gold-divider-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 168, 71, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(210, 9, 6, 0.3), transparent);
 }
 
 .gold-divider-diamond {
   width: 6px;
   height: 6px;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--primary);
   transform: rotate(45deg);
   flex-shrink: 0;
 }

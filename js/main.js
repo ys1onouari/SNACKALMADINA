@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    Lock système — 3 tentatives, blocage 24h
    ============================================ */
 
-const LOCK_KEY = 'luxora_lock';
+const LOCK_KEY = 'fadaerif_lock';
 
 function getLockState() {
   try {

@@ -1,4 +1,4 @@
-# LUXORA · Fine Dining — Menu Digital
+# RESTAURANT FADAE RIF — Menu Digital
 
 ## Architecture
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#0c0a14"/>
-  <meta name="description" content="Luxora · Restaurant Gastronomique — Menu Digital"/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23d4a847%22><text y=%2220%22 font-size=%2220%22>L</text></svg>">
-  <title>LUXORA · Restaurant Gastronomique</title>
+  <meta name="theme-color" content="#090909"/>
+  <meta name="description" content="RESTAURANT FADAE RIF · Menu Digital"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23D40906%22><text y=%2220%22 font-size=%2220%22>F</text></svg>">
+  <title>RESTAURANT FADAE RIF · Restaurant Gastronomique</title>
 
   <!-- Polices Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -22,8 +22,7 @@
 <nav class="top-nav">
   <a class="logo" href="#" data-page="home">
     <div>
-      <div class="logo-text">LUXORA</div>
-      <div class="logo-sub">Restaurant Gastronomique</div>
+      <div class="logo-text"><img class="logo-img" src="logo.png" alt="FADAE RIF"></div>
     </div>
   </a>
 
@@ -104,8 +103,8 @@
     <div class="hero-bg"></div>
     <div class="hero-pattern">
       <div class="hero-video-wrap" id="heroVideoWrap">
-        <iframe id="heroVideo" src="https://www.youtube.com/embed/B8rAc3k2EoU?autoplay=1&loop=1&playlist=B8rAc3k2EoU&controls=0&mute=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=https://www.menuscan.space"
-          allow="autoplay; encrypted-media" title="Luxora Background"></iframe>
+        <iframe id="heroVideo" src="https://www.youtube.com/embed/P2Rh8sINTBk?autoplay=1&loop=1&playlist=P2Rh8sINTBk&controls=0&mute=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&start=1"
+          allow="autoplay; encrypted-media" title="FADAE RIF Background"></iframe>
         <div class="hero-video-overlay"></div>
       </div>
     </div>
@@ -113,9 +112,9 @@
     <div class="hero-glow-2"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">Bienvenue chez</p>
-      <h1 class="hero-title">LUXORA</h1>
+      <h1 class="hero-title">RESTAURANT FADAE RIF</h1>
       <p class="hero-subtitle">Expérience Gastronomique</p>
-      <p class="hero-tagline">Une expérience gastronomique d'exception<br/>Cuisine française raffinée · Saveurs du monde</p>
+      <p class="hero-tagline">Une expérience culinaire marocaine d'exception<br/>Saveurs authentiques · Art de la table</p>
       <button class="btn-primary" data-page="menu">
         Découvrir le Menu
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -184,7 +183,7 @@
   <div class="admin-dashboard">
   <div class="admin-scaffold">
     <aside class="admin-sidebar">
-      <div class="admin-sidebar-header">LUXORA <span>Admin</span></div>
+      <div class="admin-sidebar-header">RESTAURANT FADAE RIF <span>Admin</span></div>
       <nav class="admin-sidebar-nav">
         <button class="admin-nav-item active" data-admin-view="items">
           <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
@@ -267,7 +266,7 @@
     <div class="auth-title">Administration</div>
     <div class="auth-sub">Connectez-vous pour gérer le menu</div>
     <form id="authForm">
-      <input class="auth-input" type="email" id="authEmail" placeholder="E-mail" value="admin@luxora.com" required/>
+      <input class="auth-input" type="email" id="authEmail" placeholder="E-mail" value="admin@fadaerif.com" required/>
       <input class="auth-input" type="password" id="authPassword" placeholder="Mot de passe" required/>
       <div class="auth-error" id="authError"></div>
       <div class="auth-lock" id="authLock">
@@ -297,9 +296,9 @@ function onYouTubeIframeAPIReady() {
         onStateChange: function(e) {
           if (e.data === YT.PlayerState.PLAYING) {
             var interval = setInterval(function() {
-              try { if (e.target.getCurrentTime() >= 98) e.target.seekTo(0); }
+              try { if (e.target.getCurrentTime() >= 15) e.target.seekTo(1); }
               catch(e) { clearInterval(interval); }
-            }, 500);
+            }, 200);
           }
         },
       },

@@ -21,8 +21,8 @@ body {
 }
 
 ::selection {
-  background: var(--gold);
-  color: var(--bg);
+  background: var(--primary);
+  color: #fff;
 }
 
 ::-webkit-scrollbar {
@@ -34,7 +34,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gold3);
+  background: var(--primary);
   border-radius: var(--radius-full);
 }
 

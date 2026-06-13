@@ -12,31 +12,31 @@ const t = {
 
 function _showModal({ icon, title, message, input, confirmText, cancelText, showCancel }) {
   return new Promise(resolve => {
-    const existing = document.querySelector('.luxora-modal-overlay');
+    const existing = document.querySelector('.fadaerif-modal-overlay');
     if (existing) existing.remove();
 
     const overlay = document.createElement('div');
-    overlay.className = 'luxora-modal-overlay';
+    overlay.className = 'fadaerif-modal-overlay';
     overlay.innerHTML = `
-      <div class="luxora-modal">
-        <div class="luxora-modal-accent"></div>
-        <div class="luxora-modal-icon">${icon}</div>
-        <div class="luxora-modal-title">${title}</div>
-        <div class="luxora-modal-message">${message}</div>
-        ${input !== undefined ? `<div class="luxora-modal-input"><input type="text" id="luxoraModalInput" value="${input}" class="luxora-modal-field"/></div>` : ''}
-        <div class="luxora-modal-actions">
-          ${showCancel ? `<button class="luxora-modal-btn luxora-modal-btn-cancel">${cancelText}</button>` : ''}
-          <button class="luxora-modal-btn luxora-modal-btn-confirm">${confirmText}</button>
+      <div class="fadaerif-modal">
+        <div class="fadaerif-modal-accent"></div>
+        <div class="fadaerif-modal-icon">${icon}</div>
+        <div class="fadaerif-modal-title">${title}</div>
+        <div class="fadaerif-modal-message">${message}</div>
+        ${input !== undefined ? `<div class="fadaerif-modal-input"><input type="text" id="fadaerifModalInput" value="${input}" class="fadaerif-modal-field"/></div>` : ''}
+        <div class="fadaerif-modal-actions">
+          ${showCancel ? `<button class="fadaerif-modal-btn fadaerif-modal-btn-cancel">${cancelText}</button>` : ''}
+          <button class="fadaerif-modal-btn fadaerif-modal-btn-confirm">${confirmText}</button>
         </div>
       </div>`;
 
     document.body.appendChild(overlay);
     requestAnimationFrame(() => overlay.classList.add('open'));
 
-    const modal = overlay.querySelector('.luxora-modal');
-    const confirmBtn = modal.querySelector('.luxora-modal-btn-confirm');
-    const cancelBtn = modal.querySelector('.luxora-modal-btn-cancel');
-    const inputEl = modal.querySelector('#luxoraModalInput');
+    const modal = overlay.querySelector('.fadaerif-modal');
+    const confirmBtn = modal.querySelector('.fadaerif-modal-btn-confirm');
+    const cancelBtn = modal.querySelector('.fadaerif-modal-btn-cancel');
+    const inputEl = modal.querySelector('#fadaerifModalInput');
 
     if (inputEl) setTimeout(() => inputEl.focus(), 200);
 
