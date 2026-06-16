@@ -130,6 +130,12 @@ function initAuth() {
     }).catch(() => {});
   }).catch(() => {});
 
+  const toggle = $('authToggle');
+  toggle?.addEventListener('click', () => {
+    toggle.classList.toggle('on');
+    toggle.setAttribute('aria-checked', toggle.classList.contains('on'));
+  });
+
   btn.addEventListener('click', () => {
     if (isLoggedIn) {
       showAdminPage();
@@ -164,8 +170,11 @@ function initAuth() {
       return;
     }
 
+    const toggle = $('authToggle');
+    const persistSession = toggle?.classList.contains('on') ?? false;
+
     try {
-      await login(email.value, password.value);
+      await login(email.value, password.value, persistSession);
       resetLock();
       overlay.classList.remove('open');
       clearInterval(lockInterval);

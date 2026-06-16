@@ -56,6 +56,7 @@ export default {
     emailPlaceholder: 'E-mail',
     passwordPlaceholder: 'Mot de passe',
     loginBtn: 'Se connecter',
+    keepSession: 'Garder ma session active',
     lockedTitle: 'Accès temporairement verrouillé',
     lockedMsg: 'Trop de tentatives. Réessayez dans ',
     errorInvalid: 'Email ou mot de passe incorrect',

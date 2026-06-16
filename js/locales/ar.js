@@ -56,6 +56,7 @@ export default {
     emailPlaceholder: 'البريد الإلكتروني',
     passwordPlaceholder: 'كلمة المرور',
     loginBtn: 'تسجيل الدخول',
+    keepSession: 'الحفاظ على جلستي نشطة',
     lockedTitle: 'الوصول مؤقتاً مقفول',
     lockedMsg: 'محاولات كثيرة جداً. حاول مرة أخرى بعد ',
     errorInvalid: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',

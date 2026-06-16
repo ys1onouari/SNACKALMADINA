@@ -109,6 +109,10 @@
   font-family: 'Tajawal', 'Noto Naskh Arabic', 'Inter', sans-serif;
 }
 
+[dir="rtl"] .auth-toggle-label {
+  font-family: 'Tajawal', 'Noto Naskh Arabic', 'Inter', sans-serif;
+}
+
 [dir="rtl"] .auth-title {
   font-family: 'Tajawal', 'Noto Naskh Arabic', serif;
 }

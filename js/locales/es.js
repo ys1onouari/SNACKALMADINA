@@ -56,6 +56,7 @@ export default {
     emailPlaceholder: 'Correo electrónico',
     passwordPlaceholder: 'Contraseña',
     loginBtn: 'Iniciar sesión',
+    keepSession: 'Mantener mi sesión activa',
     lockedTitle: 'Acceso bloqueado temporalmente',
     lockedMsg: 'Demasiados intentos. Inténtalo de nuevo en ',
     errorInvalid: 'Correo o contraseña incorrectos',

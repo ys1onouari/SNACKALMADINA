@@ -253,9 +253,13 @@
     <div class="auth-title" data-i18n="auth.title">Administration</div>
     <div class="auth-sub" data-i18n="auth.subtitle">Connectez-vous pour gérer le menu</div>
     <form id="authForm">
-      <input class="auth-input" type="email" id="authEmail" data-i18n-placeholder="auth.emailPlaceholder" placeholder="E-mail" value="admin@fadaerif.com" required/>
+      <input class="auth-input" type="email" id="authEmail" data-i18n-placeholder="auth.emailPlaceholder" placeholder="E-mail" value="admin@hamham.com" required/>
       <input class="auth-input" type="password" id="authPassword" data-i18n-placeholder="auth.passwordPlaceholder" placeholder="Mot de passe" required/>
       <div class="auth-error" id="authError"></div>
+      <div class="auth-toggle-row">
+        <button type="button" class="auth-toggle" id="authToggle" role="switch" aria-checked="false"></button>
+        <span class="auth-toggle-label" data-i18n="auth.keepSession">Garder ma session active</span>
+      </div>
       <div class="auth-lock" id="authLock">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <div class="auth-lock-title" data-i18n="auth.lockedTitle">Accès temporairement verrouillé</div>
