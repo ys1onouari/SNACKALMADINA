@@ -2,12 +2,9 @@ import { initMenu, showPage } from './menu.js';
 import { initNavigation } from './navigation.js';
 import { login } from './auth.js';
 import { supabaseReady } from './supabase.js';
-import { initAdmin } from './admin-dashboard.js';
 import { i18nReady, translatePage, changeLanguage, t } from './i18n.js';
-
-function $(id) {
-  return document.getElementById(id);
-}
+import { $ } from './helpers.js';
+import { LOCK_KEY } from './constants.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await i18nReady;
@@ -41,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
    Lock système — 3 tentatives, blocage 24h
    ============================================ */
 
-const LOCK_KEY = 'fadaerif_lock';
 
 function getLockState() {
   try {
@@ -170,11 +166,8 @@ function initAuth() {
       return;
     }
 
-    const toggle = $('authToggle');
-    const persistSession = toggle?.classList.contains('on') ?? false;
-
     try {
-      await login(email.value, password.value, persistSession);
+      await login(email.value, password.value);
       resetLock();
       overlay.classList.remove('open');
       clearInterval(lockInterval);
@@ -204,8 +197,18 @@ function setLoggedIn(btn, loggedIn) {
   }
 }
 
-function showAdminPage() {
+let adminModulePromise = null;
+
+async function showAdminPage() {
   document.querySelectorAll('[data-page="admin"]').forEach(el => el.style.display = '');
   showPage('admin');
-  initAdmin().catch(e => console.warn('Erreur d\'initialisation de l\'administration :', e));
+  try {
+    if (!adminModulePromise) {
+      adminModulePromise = import('./admin-dashboard.js');
+    }
+    const adminModule = await adminModulePromise;
+    await adminModule.initAdmin();
+  } catch (e) {
+    console.warn("Erreur d'initialisation de l'administration :", e);
+  }
 }

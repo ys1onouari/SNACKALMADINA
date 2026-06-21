@@ -1,5 +1,6 @@
-import { getMenuItems, getCategories, getSettings } from './supabase.js';
+import { getMenuItems, getCategories, getSettings, getSupabaseStatus } from './supabase.js';
 import { t, localized } from './i18n.js';
+import { $ } from './helpers.js';
 
 let WA_NUMBER = '212630230803';
 let SETTINGS = {};
@@ -7,8 +8,17 @@ let SETTINGS = {};
 let MENU_DATA = [];
 let CATEGORIES = [{ id: null, name: '__all__', icon: '' }];
 let CATEGORY_MAP = new Map();
+let LOAD_STATUS = 'success';
+let MENU_CACHE = { data: null, settings: null };
 
-export async function loadMenuData() {
+export async function loadMenuData(forceRefresh = false) {
+  if (!forceRefresh && MENU_CACHE.data) {
+    MENU_DATA = MENU_CACHE.data.menuData;
+    CATEGORIES = MENU_CACHE.data.categories;
+    LOAD_STATUS = MENU_CACHE.data.loadStatus;
+    buildCategoryMap();
+    return;
+  }
   try {
     const [items, cats] = await Promise.all([getMenuItems(), getCategories()]);
     if (items.length > 0 && cats.length > 0) {
@@ -23,14 +33,20 @@ export async function loadMenuData() {
         ...cats.map(c => ({ id: c.id, name: c.name, icon: c.icon_svg || '' })),
       ];
     }
+    const status = getSupabaseStatus();
+    if ((items.length === 0 || cats.length === 0) && (status.type === 'timeout' || status.type === 'error')) {
+      LOAD_STATUS = 'unavailable';
+    } else if (items.length === 0 && cats.length === 0) {
+      LOAD_STATUS = 'empty';
+    } else {
+      LOAD_STATUS = 'success';
+    }
+    if (LOAD_STATUS !== 'unavailable') {
+      MENU_CACHE.data = { menuData: MENU_DATA, categories: CATEGORIES, loadStatus: LOAD_STATUS };
+    }
   } catch (e) {
     console.warn('Erreur chargement données :', e);
-  }
-  if (!MENU_DATA.length) {
-    showToast('⚠️ Impossible de charger la carte depuis le serveur.');
-  }
-  if (CATEGORIES.length <= 1) {
-    showToast('⚠️ Impossible de charger les catégories.');
+    LOAD_STATUS = 'unavailable';
   }
   buildCategoryMap();
 }
@@ -47,12 +63,39 @@ function getCategoryName(categoryId) {
   return cat ? localized(cat.name) : '';
 }
 
-export async function loadSettings() {
+export function applySettings(settings) {
+  SETTINGS = settings;
+  if (settings.wa_number) WA_NUMBER = settings.wa_number;
+  MENU_CACHE.settings = settings;
+  renderBranding();
+}
+
+export async function loadSettings(forceRefresh = false) {
+  if (!forceRefresh && MENU_CACHE.settings) {
+    SETTINGS = MENU_CACHE.settings;
+    if (SETTINGS.wa_number) WA_NUMBER = SETTINGS.wa_number;
+    renderBranding();
+    return;
+  }
   try {
     SETTINGS = await getSettings();
     if (SETTINGS.wa_number) WA_NUMBER = SETTINGS.wa_number;
+    MENU_CACHE.settings = SETTINGS;
+    renderBranding();
   } catch (e) {
     console.warn('Impossible de charger la configuration :', e);
+  }
+}
+
+export function renderBranding() {
+  const titleEl = $('heroTitle');
+  const subtitleEl = $('heroSubtitle');
+  const s = SETTINGS;
+  if (titleEl) {
+    titleEl.textContent = s.restaurant_name || titleEl.textContent || 'FADAE RIF';
+  }
+  if (subtitleEl && s.restaurant_subtitle) {
+    subtitleEl.textContent = s.restaurant_subtitle;
   }
 }
 
@@ -66,26 +109,28 @@ export function renderContact() {
   if (s.phone) cards.push(`<div class="contact-card"><div class="contact-info"><h3>${t('contact.phoneTitle')}</h3><a href="tel:${s.phone_raw || s.phone}">${s.phone}</a></div></div>`);
   if (s.email) cards.push(`<div class="contact-card"><div class="contact-info"><h3>${t('contact.emailTitle')}</h3><a href="mailto:${s.email}">${s.email}</a></div></div>`);
   if (s.instagram) cards.push(`<div class="contact-card"><div class="contact-info"><h3>${t('contact.instagramTitle')}</h3><a href="${s.instagram}" target="_blank" rel="noopener">${s.instagram}</a></div></div>`);
-  wrap.innerHTML = `
-    <div class="contact-grid">${cards.join('')}</div>
+  if (s.wa_number) {
+    const wa = s.wa_number.trim().replace(/^\+/, '');
+    cards.push(`<div class="contact-card"><div class="contact-info"><h3>${t('contact.whatsappTitle')}</h3><a href="https://wa.me/${wa}" target="_blank" rel="noopener">${s.wa_number}</a></div></div>`);
+  }
+  const googleBlock = s.google_reviews_url ? `
     <div class="google-review-block">
       <div class="google-review-stars">${t('contact.reviewStars')}</div>
       <div class="google-review-score">${t('contact.reviewScore')}</div>
       <div class="google-review-count">${t('contact.reviewCount')}</div>
       <p class="google-review-msg">${t('contact.reviewMsg')}</p>
-      <a class="google-review-btn" href="https://maps.app.goo.gl/YVrDEyhoaB1JkEJXA" target="_blank">
+      <a class="google-review-btn" href="${s.google_reviews_url}" target="_blank" rel="noopener">
         <svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
         ${t('contact.reviewBtn')}
       </a>
-    </div>`;
+    </div>` : '';
+  wrap.innerHTML = `
+    <div class="contact-grid">${cards.join('')}</div>
+    ${googleBlock}`;
 }
 
 let cart = [];
 let activeFilterId = null;
-
-function $(id) {
-  return document.getElementById(id);
-}
 
 function qsa(sel, ctx) {
   return (ctx || document).querySelectorAll(sel);
@@ -196,7 +241,28 @@ function setFilter(id) {
   renderMenuGrid();
 }
 
+function renderMenuStatus() {
+  const el = $('noResults');
+  if (!el) return;
+  if (LOAD_STATUS === 'unavailable') {
+    el.innerHTML = `
+      <p>${t('menu.unavailable')}</p>
+      <p style="margin-top:8px;font-size:12px">${t('menu.unavailableSub')}</p>
+      <button class="btn-retry" id="retryBtn">${t('menu.retry')}</button>
+    `;
+    el.style.display = 'block';
+    $('retryBtn')?.addEventListener('click', async () => {
+      el.style.display = 'none';
+      await initMenu();
+    });
+  } else if (LOAD_STATUS === 'empty') {
+    el.innerHTML = `<p>${t('menu.empty')}</p>`;
+    el.style.display = 'block';
+  }
+}
+
 export function renderMenuGrid(items) {
+  if (LOAD_STATUS === 'unavailable') return;
   if (!items) {
     items = MENU_DATA.filter(d => {
       return activeFilterId === null || d.category_id === activeFilterId;
@@ -415,12 +481,16 @@ function setupMenuEventListeners() {
 export async function initMenu() {
   await loadMenuData();
   await loadSettings();
-  renderHomeCats();
-  renderFeatured();
-  renderFilterChips();
-  renderMenuGrid();
   renderContact();
   updateCartBadge();
   setupReveal();
   setupMenuEventListeners();
+  if (LOAD_STATUS === 'unavailable') {
+    renderMenuStatus();
+    return;
+  }
+  renderHomeCats();
+  renderFeatured();
+  renderFilterChips();
+  renderMenuGrid();
 }

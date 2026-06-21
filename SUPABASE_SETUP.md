@@ -50,7 +50,7 @@ Le projet utilise **Supabase Auth** avec la méthode **Email + Password**.
 
 | Champ | Valeur |
 |---|---|
-| Email | `admin@fadaerif.ma` |
+| Email | `admin@fadaerif.com` |
 | Mot de passe | `<your-admin-password>` |
 
 ### Création de l'admin user
@@ -65,18 +65,18 @@ Le projet utilise **Supabase Auth** avec la méthode **Email + Password**.
 curl -X POST https://api.supabase.com/v1/projects/<project-ref>/database/query \
   -H "Authorization: Bearer sbp_<pat>" \
   -H "Content-Type: application/json" \
-  -d '{"query": "SELECT supabase_auth.admin_create_user('\''admin@fadaerif.ma'\'', '\''<your-admin-password>'\'');"}'
+  -d '{"query": "SELECT supabase_auth.admin_create_user('\''admin@fadaerif.com'\'', '\''<your-admin-password>'\'');"}'
 ```
 
 ### Connexion côté client
 
-Méthode : `supabase.auth.signInWithPassword({ email, password })`
+Méthode : `supabase.auth.signInWithPassword({ email, password })` via `auth.js:login(email, password)`
 
 Déconnexion : `supabase.auth.signOut()`
 
-### Session persistante
+### Session (mémoire uniquement)
 
-Supabase gère automatiquement le refresh token et la persistance de session via `localStorage`. Le code appelle `sup.auth.getSession()` au chargement pour restaurer l'état connecté.
+Le client Supabase est créé avec `{ auth: { persistSession: false } }` dans `js/supabase.js:33`. La session est stockée en mémoire seulement — pas d'écriture dans localStorage. Au rechargement, session perdue → reconnexion requise. Le Bearer token reste en mémoire pour les mutations RLS.
 
 ---
 
@@ -87,7 +87,7 @@ Supabase gère automatiquement le refresh token et la persistance de session via
 ```sql
 CREATE TABLE categories (
   id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name       TEXT NOT NULL UNIQUE,
+  name       JSONB NOT NULL DEFAULT '{"fr":""}',
   icon_svg   TEXT DEFAULT '',
   sort_order INT DEFAULT 0
 );
@@ -96,7 +96,7 @@ CREATE TABLE categories (
 | Colonne | Type | Contraintes | Usage |
 |---|---|---|---|
 | `id` | BIGINT (PK) | AUTO-INCREMENT | Identifiant unique |
-| `name` | TEXT | NOT NULL, UNIQUE | Nom de la catégorie |
+| `name` | JSONB | NOT NULL | Nom multilingue `{fr, en, es, ar}` |
 | `icon_svg` | TEXT | DEFAULT '' | SVG inline (plus utilisé dans l'UI, conservé pour compat) |
 | `sort_order` | INT | DEFAULT 0 | Ordre d'affichage |
 
@@ -105,10 +105,10 @@ CREATE TABLE categories (
 ```sql
 CREATE TABLE menu_items (
   id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  name        TEXT NOT NULL,
-  category    TEXT NOT NULL,
+  name        JSONB NOT NULL DEFAULT '{"fr":""}',
+  category_id BIGINT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
   price       NUMERIC(6,1) NOT NULL,
-  description TEXT DEFAULT '',
+  description JSONB DEFAULT '{"fr":""}',
   tags        TEXT[] DEFAULT '{}',
   available   BOOLEAN DEFAULT TRUE,
   popular     BOOLEAN DEFAULT FALSE,
@@ -119,10 +119,10 @@ CREATE TABLE menu_items (
 | Colonne | Type | Contraintes | Usage |
 |---|---|---|---|
 | `id` | BIGINT (PK) | AUTO-INCREMENT | Identifiant unique |
-| `name` | TEXT | NOT NULL | Nom du plat |
-| `category` | TEXT | NOT NULL | Nom de la catégorie (référence) |
+| `name` | JSONB | NOT NULL | Nom multilingue `{fr, en, es, ar}` |
+| `category_id` | BIGINT | NOT NULL, FK → categories(id) ON DELETE RESTRICT | Référence à la catégorie |
 | `price` | NUMERIC(6,1) | NOT NULL | Prix en DH |
-| `description` | TEXT | DEFAULT '' | Description du plat |
+| `description` | JSONB | DEFAULT '{"fr":""}' | Description multilingue `{fr, en, es, ar}` |
 | `tags` | TEXT[] | DEFAULT '{}' | Tags (`chef`, `halal`, `spicy`) |
 | `available` | BOOLEAN | DEFAULT TRUE | Disponibilité |
 | `popular` | BOOLEAN | DEFAULT FALSE | À la une (featured) |
@@ -313,7 +313,7 @@ async function getClient() {
 ### Auth
 
 | Fonction (dans auth.js) | Opération |
-|---|---|
+|---|---|---|
 | `login(email, password)` | `auth.signInWithPassword()` |
 
 ---
@@ -355,7 +355,7 @@ flowchart TD
 
 6. **Créer l'admin user**
    - `Authentication → Users → Add User`
-   - Email : `admin@fadaerif.ma` / Password : `<your-admin-password>`
+   - Email : `admin@fadaerif.com` / Password : `<your-admin-password>`
 
 7. **Vérifier** que les tables et le bucket existent
    - `Table Editor` : voir `categories`, `menu_items`, `settings`
@@ -364,25 +364,19 @@ flowchart TD
 
 8. **Tester** l'application
    ```bash
-   npx serve luxora --listen 3000
+   npx serve . --listen 3000
    ```
    - Naviguer dans le menu (vérifier les données seed)
-   - Se connecter avec `admin@fadaerif.ma` / `<your-admin-password>`
+   - Se connecter avec `admin@fadaerif.com` / `<your-admin-password>`
    - Vérifier le CRUD des plats/catégories
    - Uploader une image de plat
    - Modifier la configuration
 
 ---
 
-## 10. Fallback
+## 10. Comportement en cas d'indisponibilité
 
-Si Supabase est injoignable, l'application utilise des **données locales de secours** définies dans `js/menu.js` :
-
-- `FALLBACK_MENU` : 26 plats de démonstration
-- `FALLBACK_CATS` : 8 catégories avec SVG inline
-- Les settings utilisent des valeurs par défaut dans `renderContact()`
-
-Ces données permettent de visualiser le rendu même sans connexion Supabase.
+Si Supabase est injoignable, l'application affiche un toast d'avertissement (`showToast()`) via `js/menu.js:loadMenuData()`. Il n'y a pas de données de fallback — l'interface peut s'afficher partiellement vide.
 
 ---
 
@@ -398,5 +392,5 @@ Ces valeurs sont celles de l'instance Supabase configurée. À remplacer par les
 | PAT | `<your-personal-access-token>` |
 | Anon key | `<your-anon-key>` |
 | Service key | `<your-service-role-key>` |
-| Admin email | `admin@fadaerif.ma` |
+| Admin email | `admin@fadaerif.com` |
 | Admin password | `<your-admin-password>` |

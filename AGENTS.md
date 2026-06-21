@@ -13,7 +13,7 @@ npx serve . --listen 3000
 
 | File | Role |
 |---|---|
-| `menu.js` | Shared state (`MENU_DATA`, `CATEGORIES`, `SETTINGS`, `WA_NUMBER`, `cart`), all rendering, WhatsApp. Filters by `category_id` (FK, never text). No fallback — shows `showToast()` on load failure |
+| `menu.js` | Shared state (`MENU_DATA`, `CATEGORIES`, `SETTINGS`, `WA_NUMBER`, `cart`), all rendering, WhatsApp. Filters by `category_id` (FK, never text). Shows `showToast()` on load failure — no fallback data |
 | `supabase.js` | Lazy `createClient` from CDN — **no top-level `await`**. All queries via `safeQuery`/`safeMutate` wrappers (never throw, return `[]`/`null` on failure) |
 | `admin-dashboard.js` | Inline dashboard (no separate page). XLSX columns: `Nom (FR)`/`Nom (EN)`/`Nom (ES)`/`Nom (AR)` — dynamic from `LANGUAGES` config |
 | `modal.js` | Reusable `showConfirm`/`showAlert`/`showPrompt` for admin dashboard |
@@ -21,16 +21,19 @@ npx serve . --listen 3000
 | `auth.js` | Login/logout/session via `supabaseReady` |
 | `i18n.js` | Exports `t()`, `localized()`, `i18nReady`, `translatePage()`, `changeLanguage()`. Arabic sets `dir="rtl"` on `<html>` |
 | `locales/config.js` | `LANGUAGES = ['fr','en','es','ar']` — add a language here + locale file |
+| `config.js` | `SUPABASE_URL` and `SUPABASE_ANON_KEY` (public, safe for client) |
+| `main.js` | Boot, auth lock system (3 attempts → 24h block via localStorage), auth UI |
 
 ## Supabase
-- Schema: `supabase-schema.sql` (tables, RLS, seed data)
-- Anon key in `js/config.js` (public, safe for client)
+- Schema: `supabase-schema.sql` (tables, RLS, seed data) — **authoritative source of truth**
 - Project ref: `hmglnevnhzdewbohadil`
 - `.env` at root with `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_KEY`, `SUPABASE_SBP`
 - To run SQL: `POST https://api.supabase.com/v1/projects/{ref}/database/query` with PAT as Bearer + `{"query": "..."}`
 - DB text fields (`categories.name`, `menu_items.name`, `menu_items.description`) are JSONB: `{fr: "...", en: "...", es: "...", ar: "..."}` — use `localized(value)` to display, pass the full JSONB object when saving
 - `settings` is key-value — `getSettings()` returns `{ key: value }` map
 - Image upload resizes to 800px via Canvas before Storage upload
+- `supabase.js:33` — client créé avec `{ auth: { persistSession: false } }` : session en mémoire uniquement, pas de localStorage. RLS fonctionne car le Bearer token reste en mémoire après `login()`. Au rechargement, session perdue → reconnexion requise.
+- `categories.icon_svg` column exists but icon UI was removed — field kept for DB compat only
 
 ## Conventions
 - IDs: `camelCase`; classes: `kebab-case`; data attributes: `kebab-case`
@@ -48,5 +51,7 @@ npx serve . --listen 3000
 - `categories.name` / `menu_items.category_id` is a real FK (`ON DELETE RESTRICT`) — never filter by text
 - XLSX import is backward-compatible: old files with only FR/EN/ES columns still work (missing lang columns default to empty)
 - Auth credentials: `admin@fadaerif.com` / `fadaerif2026`
-- `categories.icon_svg` column exists but icon UI was removed — field kept for DB compat only
-- `auth.js:login()` — `persistSession:false` ne désactive pas localStorage côté Supabase ; on nettoie manuellement la clé `*-auth-token`
+- Auth has client-side lock: 3 failed attempts → 24h block (stored in localStorage key `fadaerif_lock`)
+- **No tests exist** — Playwright `@playwright/test@^1.61.0` is a dependency but no test files or config are present
+- **Stale docs**: `README.md` references a `luxora/` subdirectory (files are at root). `SUPABASE_SETUP.md` and `SUPABASE_MIGRATION_GUIDE.md` claim fallback data exists in `menu.js` — it does not; the app shows toasts on failure
+- `.env` contains real Supabase secrets (in `.gitignore`). `SUPABASE_MIGRATION_GUIDE.md` also contains secrets and is gitignored

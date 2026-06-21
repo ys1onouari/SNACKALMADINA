@@ -119,8 +119,8 @@
     <div class="hero-content">
       <img class="hero-logo" src="logo.png" alt="FADAE RIF" style="width:200px;height:auto;margin-bottom:24px;display:block;margin-left:auto;margin-right:auto">
       <p class="hero-eyebrow" data-i18n="hero.eyebrow">Bienvenue chez</p>
-      <h1 class="hero-title">FADAE RIF</h1>
-      <p class="hero-subtitle" data-i18n="hero.subtitle">CAFÉ &amp; RESTAURANT</p>
+      <h1 class="hero-title" id="heroTitle">FADAE RIF</h1>
+      <p class="hero-subtitle" id="heroSubtitle">CAFÉ &amp; RESTAURANT</p>
       <button class="btn-primary" data-page="menu">
         <span data-i18n="hero.cta">Découvrir le Menu</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -230,6 +230,7 @@
               <div class="form-group"><label data-i18n="admin.configEmail">Email</label><input name="email"/></div>
               <div class="form-group"><label data-i18n="admin.configInstagram">Instagram</label><input name="instagram"/></div>
               <div class="form-group full"><label data-i18n="admin.configWaNumber">WhatsApp (numéro, sans +)</label><input name="wa_number"/></div>
+              <div class="form-group full"><label data-i18n="admin.configGoogleReviewsUrl">Google Reviews URL</label><input name="google_reviews_url" type="url"/></div>
             </div>
           </form>
         </div>
@@ -255,7 +256,7 @@
       <input class="auth-input" type="password" id="authPassword" data-i18n-placeholder="auth.passwordPlaceholder" placeholder="Mot de passe" required/>
       <div class="auth-error" id="authError"></div>
       <div class="auth-toggle-row">
-        <button type="button" class="auth-toggle" id="authToggle" role="switch" aria-checked="false"></button>
+        <button type="button" class="auth-toggle on" id="authToggle" role="switch" aria-checked="true"></button>
         <span class="auth-toggle-label" data-i18n="auth.keepSession">Garder ma session active</span>
       </div>
       <div class="auth-lock" id="authLock">

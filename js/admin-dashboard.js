@@ -8,6 +8,8 @@ import { loadMenuData, renderFeatured, renderFilterChips, renderMenuGrid, render
 import { showConfirm, showAlert } from './modal.js';
 import { t, localized } from './i18n.js';
 import { LANGUAGES } from './locales/config.js';
+import { $ } from './helpers.js';
+import { validateCategory, validateItem, validateSettings } from './admin-validation.js';
 
 /* --- Init --- */
 let items = [];
@@ -17,9 +19,8 @@ export async function initAdmin() {
   [items, cats] = await Promise.all([getMenuItems(), getCategories()]);
   renderAll();
   bindEvents();
+  await loadConfig();
 }
-
-function $(id) { return document.getElementById(id); }
 
 /* --- Helpers --- */
 function langFields(prefix, data, field) {
@@ -31,7 +32,7 @@ function langFields(prefix, data, field) {
     const extra = isTextarea ? '' : 'type="text"';
     return `<div class="form-group">
       <label>${label}</label>
-      <${tag} name="${field}${lng.toUpperCase()}" ${extra} value="${isTextarea ? '' : val.replace(/"/g, '&quot;')}" ${lng === 'fr' ? 'required' : ''}>${isTextarea ? val : ''}</${tag}>
+      <${tag} name="${field}${lng.toUpperCase()}" ${extra} value="${isTextarea ? '' : val.replace(/"/g, '&quot;')}" ${lng === 'fr' && field === 'name' ? 'required' : ''}>${isTextarea ? val : ''}</${tag}>
     </div>`;
   }).join('');
 }
@@ -189,7 +190,7 @@ function itemFormHtml(item) {
         <div class="form-group">
           <label>${t('admin.formImage')}</label>
           <div class="admin-upload">
-            <input name="image" type="file" accept="image/*" id="adminFileInput" ${isEdit ? '' : 'required'}/>
+            <input name="image" type="file" accept="image/*" id="adminFileInput"/>
             <label for="adminFileInput" class="admin-upload-label">${t('admin.formChooseImage')}</label>
             ${item?.image_url ? `<img src="${item.image_url}" class="image-preview show" id="adminPreview"/>` : '<img class="image-preview" id="adminPreview"/>'}
           </div>
@@ -336,9 +337,17 @@ function setupItemForm(item) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(form);
+    const errors = validateItem(fd);
+    if (errors.length) {
+      showAlert(errors.join('\n'), t('admin.validationError'));
+      return;
+    }
     let imageUrl = item?.image_url || '';
     const file = fd.get('image');
-    if (file && file.size > 0) imageUrl = await uploadImage(file);
+    if (file && file.size > 0) {
+      const uploaded = await uploadImage(file);
+      if (uploaded) imageUrl = uploaded;
+    }
 
     const payload = {
       name: buildJsonb(fd, 'name'),
@@ -362,6 +371,11 @@ function setupCatForm(cat) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(form);
+    const errors = validateCategory(fd);
+    if (errors.length) {
+      showAlert(errors.join('\n'), t('admin.validationError'));
+      return;
+    }
     const payload = {
       name: buildJsonb(fd, 'name'),
       sort_order: fd.get('sortOrder') ? Number(fd.get('sortOrder')) : 0,
@@ -376,7 +390,7 @@ function setupCatForm(cat) {
 async function refresh() {
   [items, cats] = await Promise.all([getMenuItems(), getCategories()]);
   renderAll();
-  await loadMenuData();
+  await loadMenuData(true);
   renderFeatured();
   renderFilterChips();
   renderMenuGrid();
@@ -606,7 +620,7 @@ async function importCatsXLSX(file) {
 
 /* --- Config --- */
 let configData = {};
-const CONFIG_KEYS = ['restaurant_name','restaurant_subtitle','address','hours','phone','phone_raw','email','instagram','wa_number'];
+const CONFIG_KEYS = ['restaurant_name','restaurant_subtitle','address','hours','phone','phone_raw','email','instagram','wa_number','google_reviews_url'];
 
 async function loadConfig() {
   try {
@@ -626,18 +640,21 @@ $('adminSaveConfig')?.addEventListener('click', async () => {
   const form = document.getElementById('adminConfigForm');
   if (!form) return;
   const fd = new FormData(form);
+  const errors = validateSettings(fd);
+  if (errors.length) {
+    showAlert(errors.join('\n'), t('admin.validationError'));
+    return;
+  }
   const updates = {};
   CONFIG_KEYS.forEach(key => { updates[key] = fd.get(key) || ''; });
-  try {
-    await upsertSettings(updates);
-    configData = updates;
-    const { loadSettings } = await import('./menu.js');
-    await loadSettings();
-    renderContact();
-    showToast(t('admin.toastConfigSaved'));
-  } catch (e) {
-    showToast(t('admin.toastConfigError', { msg: e.message }));
-  }
+  configData = updates;
+  const { applySettings } = await import('./menu.js');
+  applySettings(updates);
+  renderContact();
+  upsertSettings(updates).then(r => {
+    if (r !== null) showToast(t('admin.toastConfigSaved'));
+    else showToast(t('admin.toastConfigError', { msg: t('admin.toastConfigErrorFallback') }));
+  });
 });
 
 /* --- Logout --- */

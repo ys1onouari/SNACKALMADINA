@@ -1,8 +1,5 @@
 import { showPage, openCart, closeCart, checkoutWhatsApp } from './menu.js';
-
-function $(id) {
-  return document.getElementById(id);
-}
+import { $ } from './helpers.js';
 
 export function initNavigation() {
   document.addEventListener('click', (e) => {

@@ -1,14 +1,36 @@
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
 
+const QUERY_TIMEOUT = 15000;
+class SupabaseTimeoutError extends Error {
+  constructor() {
+    super('Requête Supabase expirée');
+    this.name = 'SupabaseTimeoutError';
+  }
+}
+
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new SupabaseTimeoutError()), ms)
+    ),
+  ]);
+}
+
 let _supabasePromise = null;
 let _clientError = null;
+let _lastStatus = { type: 'success' };
+
+export function getSupabaseStatus() {
+  return { ..._lastStatus };
+}
 
 function getClient() {
   if (!_supabasePromise) {
     _supabasePromise = (async () => {
       try {
         const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-        return createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false } });
       } catch (e) {
         _clientError = e;
         return null;
@@ -24,10 +46,14 @@ async function safeQuery(fn) {
   try {
     const supabase = await getClient();
     if (!supabase) throw _clientError || new Error('Client non initialisé');
-    const { data, error } = await fn(supabase);
+    const { data, error } = await withTimeout(fn(supabase), QUERY_TIMEOUT);
     if (error) throw error;
+    _lastStatus = { type: 'success' };
     return data || [];
   } catch (e) {
+    _lastStatus = e instanceof SupabaseTimeoutError
+      ? { type: 'timeout' }
+      : { type: 'error', message: e.message || String(e) };
     console.warn('Supabase —', e.message || e);
     return [];
   }
@@ -37,10 +63,14 @@ async function safeMutate(fn) {
   try {
     const supabase = await getClient();
     if (!supabase) throw _clientError || new Error('Client non initialisé');
-    const { data, error } = await fn(supabase);
+    const { data, error } = await withTimeout(fn(supabase), QUERY_TIMEOUT);
     if (error) throw error;
+    _lastStatus = { type: 'success' };
     return data;
   } catch (e) {
+    _lastStatus = e instanceof SupabaseTimeoutError
+      ? { type: 'timeout' }
+      : { type: 'error', message: e.message || String(e) };
     console.warn('Supabase —', e.message || e);
     return null;
   }
@@ -74,17 +104,11 @@ export async function updateCategory(id, updates) {
 }
 
 export async function deleteCategory(id) {
-  try {
-    const supabase = await getClient();
-    if (!supabase) return;
-    const { error } = await supabase
-      .from('categories')
-      .delete()
-      .eq('id', id);
-    if (error) console.warn('Supabase —', error.message);
-  } catch (e) {
-    console.warn('Supabase —', e.message || e);
-  }
+  return safeMutate(sup => sup
+    .from('categories')
+    .delete()
+    .eq('id', id)
+  );
 }
 
 export async function getMenuItems() {
@@ -115,17 +139,11 @@ export async function updateMenuItem(id, updates) {
 }
 
 export async function deleteMenuItem(id) {
-  try {
-    const supabase = await getClient();
-    if (!supabase) return;
-    const { error } = await supabase
-      .from('menu_items')
-      .delete()
-      .eq('id', id);
-    if (error) console.warn('Supabase —', error.message);
-  } catch (e) {
-    console.warn('Supabase —', e.message || e);
-  }
+  return safeMutate(sup => sup
+    .from('menu_items')
+    .delete()
+    .eq('id', id)
+  );
 }
 
 export async function uploadImage(file) {
@@ -187,14 +205,11 @@ export async function getSettings() {
 }
 
 export async function upsertSettings(settings) {
-  try {
-    const supabase = await getClient();
-    if (!supabase) return;
-    const entries = Object.entries(settings);
-    const rows = entries.map(([key, value]) => ({ key, value }));
-    const { error } = await supabase.from('settings').upsert(rows, { onConflict: 'key' });
-    if (error) console.warn('Supabase —', error.message);
-  } catch (e) {
-    console.warn('Supabase —', e.message || e);
-  }
+  const entries = Object.entries(settings);
+  const rows = entries.map(([key, value]) => ({ key, value }));
+  return safeMutate(sup => sup
+    .from('settings')
+    .upsert(rows, { onConflict: 'key' })
+    .select()
+  );
 }

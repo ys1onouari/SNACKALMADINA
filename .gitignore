@@ -29,3 +29,15 @@ node_modules/
 
 # === Docs with secrets ===
 SUPABASE_MIGRATION_GUIDE.md
+
+# === Internal workflow docs (missions, audits, handoffs — not pushed to GitHub) ===
+SUMMARY.md
+docs/MISSION_REPORT.md
+docs/NEXT_SESSION_HANDOFF.md
+docs/PROJECT_ROADMAP.md
+docs/PROJECT_BLUEPRINT.md
+docs/AUDIT_ARCHITECTURE.md
+docs/AUDIT_CODE_QUALITY.md
+docs/AUDIT_DEPENDENCIES.md
+docs/AUDIT_PERFORMANCE.md
+docs/AUDIT_SECURITY.md
