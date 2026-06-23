@@ -144,6 +144,9 @@ export default {
     configInstagram: 'إنستغرام',
     configWaNumber: 'واتساب (رقم، بدون +)',
     configGoogleReviewsUrl: 'Google Reviews URL',
+    configShowDishImages: 'إظهار صور الأطباق',
+    configShowDishImagesOn: 'الصور معروضة',
+    configShowDishImagesOff: 'الصور مخفية',
   },
   modal: {
     confirm: 'تأكيد',
