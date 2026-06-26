@@ -1,4 +1,4 @@
-# DESIGN SYSTEM — RESTAURANT FADAE RIF
+# DESIGN SYSTEM — SNACK AL MADINA
 
 ## 1. Palette de couleurs
 
@@ -111,11 +111,11 @@ Importées dans `index.html` (ligne 14) :
 
 | Token | Valeur | Usage typique |
 |---|---|---|
-| `--text-xs` | `0.75rem` (12px) | Desktop nav, cat-label, section-eyebrow, badge, toast, hero-eyebrow, btn-primary, fadaerif-modal-btn |
+| `--text-xs` | `0.75rem` (12px) | Desktop nav, cat-label, section-eyebrow, badge, toast, hero-eyebrow, btn-primary, snackalmadina-modal-btn |
 | `--text-sm` | `0.875rem` (14px) | Body, chip, inputs, cart-item, auth-sub, google-review-count, no-results |
 | `--text-base` | `1rem` (16px) | body par défaut, cart-remove, contact-info h3 |
 | `--text-lg` | `1.125rem` (18px) | dish-name, icon-btn, hero-tagline |
-| `--text-xl` | `1.25rem` (20px) | cart-title, auth-title, fadaerif-modal-title, close-btn |
+| `--text-xl` | `1.25rem` (20px) | cart-title, auth-title, snackalmadina-modal-title, close-btn |
 | `--text-2xl` | `1.5rem` (24px) | dish-price, auth-title, cart-total-amount, admin-view-header h1 (responsive) |
 | `--text-3xl` | `2rem` (32px) | section-title, cart-total-amount |
 
@@ -222,11 +222,11 @@ Font sizes supplémentaires (hardcodées) :
 - **Tables :** `.admin-tbl` — responsive, card layout on `<480px`
 - **Modaux :** `.admin-modal` — `scaleIn`, `--radius-lg`, inputs gold focus
 
-### FADAE RIF Modal (Confirm / Alert / Prompt)
+### SNACK AL MADINA Modal (Confirm / Alert / Prompt)
 
 - **Fichier :** `css/components.css` lignes 1924–2070
-- **Structure :** `.fadaerif-modal-overlay` (backdrop blur), `.fadaerif-modal` (scale transition), accent line top
-- **Enfant :** `.fadaerif-modal-icon`, `.fadaerif-modal-title` (Playfair), `.fadaerif-modal-message`, `.fadaerif-modal-field`, `.fadaerif-modal-actions` → `.fadaerif-modal-btn-confirm` (gradient-primary) / `.fadaerif-modal-btn-cancel`
+- **Structure :** `.snackalmadina-modal-overlay` (backdrop blur), `.snackalmadina-modal` (scale transition), accent line top
+- **Enfant :** `.snackalmadina-modal-icon`, `.snackalmadina-modal-title` (Playfair), `.snackalmadina-modal-message`, `.snackalmadina-modal-field`, `.snackalmadina-modal-actions` → `.snackalmadina-modal-btn-confirm` (gradient-primary) / `.snackalmadina-modal-btn-cancel`
 
 ### Chips (filtres)
 
@@ -323,7 +323,7 @@ Breakpoints de grille supplémentaires (dans `css/layout.css`) :
 |---|---|---|
 | `shimmer` | Background-position slide (skeleton) | Réservé (chargement) |
 | `fadeUp` | Opacity 0→1 + translateY(24px)→0 | `.hero-content`, `.page.active` |
-| `scaleIn` | Opacity 0→1 + scale(0.9)→1 | `.auth-modal`, `.admin-modal`, `.fadaerif-modal` |
+| `scaleIn` | Opacity 0→1 + scale(0.9)→1 | `.auth-modal`, `.admin-modal`, `.snackalmadina-modal` |
 | `slideIn` | translateX(100%)→0 + opacity 0→1 | `.cart-sidebar.open` |
 | `cartBounce` | scale 1→1.3→1 | `.cart-badge.show` |
 
@@ -361,9 +361,9 @@ Keyframes supplémentaires :
 | `.auth-toggle` | background, border-color | 0.3s | ease |
 | `.auth-toggle::after` | transform, background | 0.3s | `cubic-bezier(0.34, 1.56, 0.64, 1)` |
 | `.auth-btn` | all | 0.3s | ease |
-| `.fadaerif-modal-overlay` | opacity | 0.3s | ease |
-| `.fadaerif-modal` | transform | 0.3s | `cubic-bezier(0.22, 1, 0.36, 1)` |
-| `.fadaerif-modal-btn` | all | 0.3s | ease |
+| `.snackalmadina-modal-overlay` | opacity | 0.3s | ease |
+| `.snackalmadina-modal` | transform | 0.3s | `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `.snackalmadina-modal-btn` | all | 0.3s | ease |
 | `.google-review-block` | all | 0.4s | ease |
 | `.contact-card` | all | 0.3s | ease |
 

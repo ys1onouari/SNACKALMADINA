@@ -1,6 +1,6 @@
-# Configuration Supabase — RESTAURANT FADAE RIF
+# Configuration Supabase — SNACK AL MADINA
 
-Ce document répertorie **toute** la configuration Supabase utilisée par le projet RESTAURANT FADAE RIF. Il permet de migrer vers un nouveau compte/projet Supabase sans rien oublier.
+Ce document répertorie **toute** la configuration Supabase utilisée par le projet SNACK AL MADINA. Il permet de migrer vers un nouveau compte/projet Supabase sans rien oublier.
 
 ---
 
@@ -16,7 +16,7 @@ export const SUPABASE_ANON_KEY = '<anon-key-public>';
 ### Fichier `.env` (racine du projet — usage local / CI)
 
 ```env
-# Supabase — FADAE RIF Admin
+# Supabase — SNACK AL MADINA Admin
 SUPABASE_URL=https://<project-ref>.supabase.co
 SUPABASE_ANON_KEY=<anon-key-public>
 SUPABASE_SERVICE_KEY=<service-role-key>       # Ne JAMAIS exposer côté client
@@ -146,14 +146,14 @@ CREATE TABLE settings (
 
 | Key | Valeur par défaut | Usage |
 |---|---|---|
-| `restaurant_name` | `RESTAURANT FADAE RIF` | Nom dans le header et WhatsApp |
+| `restaurant_name` | `SNACK AL MADINA` | Nom dans le header et WhatsApp |
 | `restaurant_subtitle` | `Restaurant Gastronomique` | Sous-titre (contact) |
 | `address` | Adresse complète | Page contact |
 | `hours` | Horaires d'ouverture | Page contact |
 | `phone` | `+212 524 43 21 00` | Page contact (formaté) |
 | `phone_raw` | `+212524432100` | Lien tel: dans le contact |
-| `email` | `contact@fadaerif.ma` | Page contact |
-| `instagram` | `@fadaerif.marrakech` | Page contact |
+| `email` | `contact@snackalmadina.ma` | Page contact |
+| `instagram` | `@snackalmadina.marrakech` | Page contact |
 | `wa_number` | `212661234567` | Numéro WhatsApp (sans +) |
 
 ---

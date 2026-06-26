@@ -1941,7 +1941,7 @@
 body.admin-mode .bottom-nav { display: none; }
 body.admin-mode .page { padding-bottom: 0; }
 
-/* --- FADAE RIF Custom Modal (Confirm / Alert / Prompt) --- */
+/* --- SNACK AL MADINA Custom Modal (Confirm / Alert / Prompt) --- */
 .snackalmadina-modal-overlay {
   position: fixed;
   inset: 0;

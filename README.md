@@ -1,4 +1,4 @@
-# RESTAURANT FADAE RIF — Menu Digital
+# SNACK AL MADINA — Menu Digital
 
 ## Architecture
 
